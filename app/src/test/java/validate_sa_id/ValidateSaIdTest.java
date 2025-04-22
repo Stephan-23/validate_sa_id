@@ -21,6 +21,10 @@ public class ValidateSaIdTest {
     public void testIsIdNumberValidTooLong() {
         assertFalse(ValidateSaId.isIdNumberValid("12345678901234")); // 14 digits
     }
-
+    //test if the id has letters
+    @Test
+    public void testIsIdNumberValidNonNumeric() {
+        assertFalse(ValidateSaId.isIdNumberValid("20010A4800086")); // Contains 'A'
+    }
 
 }
