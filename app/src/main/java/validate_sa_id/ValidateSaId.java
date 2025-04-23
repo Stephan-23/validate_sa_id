@@ -11,8 +11,57 @@ public class ValidateSaId {
         if (!idNumber.matches("\\d+")) {
             return false;
         }
+           // Extract parts of the ID number
+        String dateOfBirth = idNumber.substring(0, 6); // YYMMDD
+        String genderDigits = idNumber.substring(6, 10); // SSSS
+        char citizenship = idNumber.charAt(10); // C
+        char checksum = idNumber.charAt(12); // Z
 
+        // Validate date of birth (basic check)
+        int year = Integer.parseInt(dateOfBirth.substring(0, 2));
+        int month = Integer.parseInt(dateOfBirth.substring(2, 4));
+        int day = Integer.parseInt(dateOfBirth.substring(4, 6));
+        int fullYear = year >= 25 ? 1900 + year : 2000 + year;
+        if (month < 1 || month > 12 || day < 1 || day > 31) {
+            return false;
+        }
+         
+         // Validate gender digits
+         int genderCode = Integer.parseInt(genderDigits);
+         if (genderCode < 0 || genderCode > 9999) {
+             return false;
+         }
+ 
+         // Validate citizenship digit
+         if (citizenship != '0' && citizenship != '1') {
+             return false;
+         }
+ 
+         // Validate checksum using Luhn algorithm
+         if (!isLuhnValid(idNumber)) {
+             return false;
+         }
+         return true;
+        }
+
+        private static boolean isLuhnValid(String idNumber) {
+            int sum = 0;
+            boolean alternate = false;
+    
+            for (int i = idNumber.length() - 1; i >= 0; i--) {
+                int n = Integer.parseInt(idNumber.substring(i, i + 1));
+                if (alternate) {
+                    n *= 2;
+                    if (n > 9) {
+                        n -= 9;
+                    }
+                }
+                sum += n;
+                alternate = !alternate;
+            }
+        return (sum % 10 == 0);
+      //   return true;
         // return false; 
-       return idNumber.equals("2001014800086") || idNumber.equals("2909035800085");
+        //  return idNumber.equals("2001014800086") || idNumber.equals("2909035800085");
  }
 }
