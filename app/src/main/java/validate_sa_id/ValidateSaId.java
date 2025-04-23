@@ -1,5 +1,6 @@
 package validate_sa_id;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -56,14 +57,14 @@ public class ValidateSaId {
 
 
         //method for date validation
-             private static boolean isValidDate(String dateOfBirth) {
-                    try {
-                        int year = Integer.parseInt(dateOfBirth.substring(0, 2));
-                        int month = Integer.parseInt(dateOfBirth.substring(2, 4));
-                        int day = Integer.parseInt(dateOfBirth.substring(4, 6));
+         private static boolean isValidDate(String dateOfBirth) {
+              try {
+                  int year = Integer.parseInt(dateOfBirth.substring(0, 2));
+                  int month = Integer.parseInt(dateOfBirth.substring(2, 4));
+                  int day = Integer.parseInt(dateOfBirth.substring(4, 6));
 
 
-                        int fullYear = year >= 25 ? 1900 + year : 2000 + year;
+                  int fullYear = year >= 25 ? 1900 + year : 2000 + year;
 
                         // Use LocalDate to validate the date
                         LocalDate date = LocalDate.of(fullYear, month, day);
@@ -72,10 +73,12 @@ public class ValidateSaId {
 
                         // Ensure the parsed date matches the input (handles invalid dates like Feb 30)
                         return formattedDate.equals(dateOfBirth);
-                        } catch (DateTimeParseException | NumberFormatException e) {
-                            return false;
-                        }
+                    } catch (DateTimeException | NumberFormatException e) {
+                        return false;
+                    }
                 }
+
+
 
         private static boolean isLuhnValid(String idNumber) {
             int sum = 0;
