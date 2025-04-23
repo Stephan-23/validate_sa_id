@@ -62,7 +62,7 @@ public class ValidateSaId {
                         int month = Integer.parseInt(dateOfBirth.substring(2, 4));
                         int day = Integer.parseInt(dateOfBirth.substring(4, 6));
 
-                        // Assume 00-24 as 2000s, 25-99 as 1900s
+
                         int fullYear = year >= 25 ? 1900 + year : 2000 + year;
 
                         // Use LocalDate to validate the date
@@ -93,8 +93,6 @@ public class ValidateSaId {
                 alternate = !alternate;
             }
         return (sum % 10 == 0);
-      //   return true;
-        // return false; 
-        //  return idNumber.equals("2001014800086") || idNumber.equals("2909035800085");
+    
  }
 }
