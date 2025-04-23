@@ -1,5 +1,9 @@
 package validate_sa_id;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 public class ValidateSaId {
     public static boolean isIdNumberValid(String idNumber) {
          // Check if the input is null or not exactly 13 digits
@@ -17,14 +21,19 @@ public class ValidateSaId {
         char citizenship = idNumber.charAt(10); // C
         char checksum = idNumber.charAt(12); // Z
 
-        // Validate date of birth (basic check)
-        int year = Integer.parseInt(dateOfBirth.substring(0, 2));
+        // Validate date of birth 
+        if (!isValidDate(dateOfBirth)) {
+            return false;
+        }
+       /*  int year = Integer.parseInt(dateOfBirth.substring(0, 2));
         int month = Integer.parseInt(dateOfBirth.substring(2, 4));
         int day = Integer.parseInt(dateOfBirth.substring(4, 6));
         int fullYear = year >= 25 ? 1900 + year : 2000 + year;
         if (month < 1 || month > 12 || day < 1 || day > 31) {
             return false;
-        }
+        }*/
+
+
          
          // Validate gender digits
          int genderCode = Integer.parseInt(genderDigits);
@@ -41,8 +50,32 @@ public class ValidateSaId {
          if (!isLuhnValid(idNumber)) {
              return false;
          }
+
          return true;
         }
+
+
+        //method for date validation
+             private static boolean isValidDate(String dateOfBirth) {
+                    try {
+                        int year = Integer.parseInt(dateOfBirth.substring(0, 2));
+                        int month = Integer.parseInt(dateOfBirth.substring(2, 4));
+                        int day = Integer.parseInt(dateOfBirth.substring(4, 6));
+
+                        // Assume 00-24 as 2000s, 25-99 as 1900s
+                        int fullYear = year >= 25 ? 1900 + year : 2000 + year;
+
+                        // Use LocalDate to validate the date
+                        LocalDate date = LocalDate.of(fullYear, month, day);
+                        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyMMdd");
+                        String formattedDate = date.format(formatter);
+
+                        // Ensure the parsed date matches the input (handles invalid dates like Feb 30)
+                        return formattedDate.equals(dateOfBirth);
+                        } catch (DateTimeParseException | NumberFormatException e) {
+                            return false;
+                        }
+                }
 
         private static boolean isLuhnValid(String idNumber) {
             int sum = 0;
