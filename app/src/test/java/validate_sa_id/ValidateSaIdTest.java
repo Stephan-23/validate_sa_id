@@ -27,4 +27,29 @@ public class ValidateSaIdTest {
         assertFalse(ValidateSaId.isIdNumberValid("20010A4800086")); // Contains 'A'
     }
 
+    @Test
+    public void testInvalidDate() {
+        assertFalse(ValidateSaId.isIdNumberValid("9213324800080")); // Invalid date LIKE 32
+    }
+    
+    @Test
+    public void testInvalidGenderCode() {
+        assertFalse(ValidateSaId.isIdNumberValid("2001019999084")); // Gender code out of range
+    }
+
+    @Test
+    public void testInvalidCitizenship() {
+        assertFalse(ValidateSaId.isIdNumberValid("2001014800286")); // Citizenship not 0 or 1
+    }
+
+    @Test
+    public void testInvalidChecksum() {
+        assertFalse(ValidateSaId.isIdNumberValid("2001014800087")); // Invalid Luhn checksum
+    }
+
+    @Test
+    public void testNullInput() {
+        assertFalse(ValidateSaId.isIdNumberValid(null)); // Null input
+    }
 }
+
